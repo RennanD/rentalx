@@ -8,6 +8,10 @@ class CategoryRepository {
     this.categories = [];
   }
 
+  public list(): Category[] {
+    return this.categories;
+  }
+
   public create({ name, description }: ICategoryDTO): void {
     const category = new Category();
 

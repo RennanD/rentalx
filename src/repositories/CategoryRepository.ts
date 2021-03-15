@@ -19,6 +19,14 @@ class CategoryRepository {
 
     this.categories.push(category);
   }
+
+  public findByName(name: string): Category {
+    const findCategory = this.categories.find(
+      (category) => category.name.toUpperCase() === name.toUpperCase()
+    );
+
+    return findCategory;
+  }
 }
 
 export { CategoryRepository };

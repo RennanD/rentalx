@@ -1,6 +1,6 @@
-import { ISpecificationsDTO } from '../dtos/ISpecificationsDTO';
-import { Specification } from '../models/Specification';
-import { ISpecificationsRepository } from './ISpecificationsRepository';
+import { ISpecificationsDTO } from '../../dtos/ISpecificationsDTO';
+import { Specification } from '../../models/Specification';
+import { ISpecificationsRepository } from '../ISpecificationsRepository';
 
 class SpecificationRepository implements ISpecificationsRepository {
   private specifications: Specification[];

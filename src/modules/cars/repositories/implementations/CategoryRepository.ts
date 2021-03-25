@@ -1,42 +1,37 @@
+import { getRepository, Repository } from 'typeorm';
+
 import { ICategoryDTO } from '../../dtos/ICategoryDTO';
 import { Category } from '../../entities/Category';
 import { ICategoriesRepository } from '../ICategoriesRepository';
 
 class CategoryRepository implements ICategoriesRepository {
-  private categories: Category[];
+  private repository: Repository<Category>;
 
-  private static INSTANCE: CategoryRepository;
-
-  private constructor() {
-    this.categories = [];
+  constructor() {
+    this.repository = getRepository(Category);
   }
 
-  public static getInstance(): CategoryRepository {
-    if (!CategoryRepository.INSTANCE) {
-      CategoryRepository.INSTANCE = new CategoryRepository();
-    }
+  public async list(): Promise<Category[]> {
+    const categories = await this.repository.find();
 
-    return CategoryRepository.INSTANCE;
+    return categories;
   }
 
-  public list(): Category[] {
-    return this.categories;
+  public async create({ name, description }: ICategoryDTO): Promise<void> {
+    const category = this.repository.create({
+      name,
+      description,
+    });
+
+    await this.repository.save(category);
   }
 
-  public create({ name, description }: ICategoryDTO): void {
-    const category = new Category();
+  public async findByName(name: string): Promise<Category> {
+    const findedCategory = await this.repository.findOne({
+      name,
+    });
 
-    Object.assign(category, { name, description, created_at: new Date() });
-
-    this.categories.push(category);
-  }
-
-  public findByName(name: string): Category {
-    const findCategory = this.categories.find(
-      (category) => category.name.toUpperCase() === name.toUpperCase()
-    );
-
-    return findCategory;
+    return findedCategory;
   }
 }
 

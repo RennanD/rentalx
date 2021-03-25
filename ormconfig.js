@@ -4,5 +4,9 @@ module.exports = {
   port: 5432,
   username: "docker",
   password: "docker",
-  database: "rentx"
+  database: "rentx",
+  migrations: ["./src/database/migrations/*.ts"],
+  cli: {
+    migrationsDir: "./src/database/migrations",
+  }
 }

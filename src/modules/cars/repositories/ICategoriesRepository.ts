@@ -1,5 +1,5 @@
 import { ICategoryDTO } from '../dtos/ICategoryDTO';
-import { Category } from '../models/Category';
+import { Category } from '../entities/Category';
 
 export interface ICategoriesRepository {
   findByName(name: string): Category;

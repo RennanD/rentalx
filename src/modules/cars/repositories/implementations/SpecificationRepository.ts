@@ -1,5 +1,5 @@
 import { ISpecificationsDTO } from '../../dtos/ISpecificationsDTO';
-import { Specification } from '../../models/Specification';
+import { Specification } from '../../entities/Specification';
 import { ISpecificationsRepository } from '../ISpecificationsRepository';
 
 class SpecificationRepository implements ISpecificationsRepository {

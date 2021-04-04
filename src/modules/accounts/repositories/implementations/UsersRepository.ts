@@ -13,7 +13,6 @@ class UsersRepository implements IUsersRepository {
 
   public async create({
     name,
-    username,
     email,
     password,
     drive_license,
@@ -21,7 +20,6 @@ class UsersRepository implements IUsersRepository {
     const user = this.repository.create({
       name,
       email,
-      username,
       password,
       drive_license,
     });

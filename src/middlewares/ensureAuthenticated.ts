@@ -35,6 +35,10 @@ export async function ensureAuthenticated(
       throw new AppError("User does'nt exists!", 401, 'auth_error');
     }
 
+    request.user = {
+      id: user_id,
+    };
+
     next();
   } catch (error) {
     if (error instanceof TokenExpiredError) {

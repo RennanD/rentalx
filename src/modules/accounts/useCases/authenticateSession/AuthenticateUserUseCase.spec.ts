@@ -43,4 +43,22 @@ describe('Authenticate user', () => {
       });
     }).rejects.toBeInstanceOf(AppError);
   });
+
+  it('show not be able to authenticate a user with invalid password', async () => {
+    const user: ICreateUserDTO = {
+      name: 'any name',
+      email: 'any@email.com',
+      password: 'correct password',
+      drive_license: 'any drive license',
+    };
+
+    await createUserUseCase.execute(user);
+
+    expect(async () => {
+      await authenticateUserUseCase.execute({
+        email: 'any_email@email.com',
+        password: 'incorrect password',
+      });
+    }).rejects.toBeInstanceOf(AppError);
+  });
 });

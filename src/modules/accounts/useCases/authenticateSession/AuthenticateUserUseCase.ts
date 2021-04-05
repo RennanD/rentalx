@@ -2,6 +2,7 @@ import { compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '../../../../errors/AppError';
 import { IUsersRepository } from '../../repositories/IUsersRepository';
 
 interface IRequest {
@@ -29,13 +30,21 @@ class AuthenticateUserUseCase {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error('Email/Password invalid combination');
+      throw new AppError(
+        'Email/Password invalid combination',
+        401,
+        'auth_error'
+      );
     }
 
     const passwordHasMatch = await compare(password, user.password);
 
     if (!passwordHasMatch) {
-      throw new Error('Email/Password invalid combination');
+      throw new AppError(
+        'Email/Password invalid combination',
+        401,
+        'auth_error'
+      );
     }
 
     const token = sign({}, 'e66d837d13a097577d969b59917bfa84', {

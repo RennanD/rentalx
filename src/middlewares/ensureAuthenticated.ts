@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { verify } from 'jsonwebtoken';
+import { verify, TokenExpiredError } from 'jsonwebtoken';
 
+import { AppError } from '../errors/AppError';
 import { UsersRepository } from '../modules/accounts/repositories/implementations/UsersRepository';
 
 interface IPayload {
@@ -15,7 +16,7 @@ export async function ensureAuthenticated(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new Error('Token missing');
+    throw new AppError('Token missing', 401, 'auth_error');
   }
 
   const [, token] = authHeader.split(' ');
@@ -31,11 +32,14 @@ export async function ensureAuthenticated(
     const user = usersRepository.findById(user_id);
 
     if (!user) {
-      throw new Error("User does'nt exists!");
+      throw new AppError("User does'nt exists!", 401, 'auth_error');
     }
 
     next();
   } catch (error) {
-    throw new Error('Invalid token');
+    if (error instanceof TokenExpiredError) {
+      throw new AppError('Your token has expired', 401, 'expired_token');
+    }
+    throw new AppError('Invalid token', 401, 'auth_error');
   }
 }

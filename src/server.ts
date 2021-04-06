@@ -4,7 +4,7 @@ import 'express-async-errors';
 import swaggerUI from 'swagger-ui-express';
 
 import './database';
-import './shared/container';
+import '@shared/container';
 
 import { handleException } from './middlewares/handleException';
 import { routes } from './routes';

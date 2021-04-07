@@ -4,7 +4,7 @@ import { Car } from '@modules/cars/infra/typeorm/entities/Car';
 import { ICarsRespository } from '../ICarsRespository';
 
 class CarRepositoryInMemory implements ICarsRespository {
-  private cars: Car[];
+  private cars: Car[] = [];
 
   async findByLicensePlate(license_plate: string): Promise<Car> {
     return this.cars.find((car) => car.license_plate === license_plate);

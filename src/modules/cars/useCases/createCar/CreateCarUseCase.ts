@@ -1,5 +1,3 @@
-import { inject, injectable } from 'tsyringe';
-
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
 import { ICarsRespository } from '@modules/cars/repositories/ICarsRespository';
 import { AppError } from '@shared/errors/AppError';

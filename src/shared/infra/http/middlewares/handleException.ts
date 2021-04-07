@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { AppError } from '../errors/AppError';
+import { AppError } from '@errors/AppError';
 
 export async function handleException(
   error: Error,
   request: Request,
   response: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction
 ): Promise<Response> {
   if (error instanceof AppError) {

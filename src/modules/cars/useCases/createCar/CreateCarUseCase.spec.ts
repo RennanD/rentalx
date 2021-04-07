@@ -34,10 +34,24 @@ describe('Create Car', () => {
       license_plate: 'any license plate',
     };
 
-    await carsRepository.create(carData);
+    await createCarUseCase.execute(carData);
 
     expect(async () => {
-      await carsRepository.create(carData);
+      await createCarUseCase.execute(carData);
     }).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('the car should be created as available', async () => {
+    const car = await createCarUseCase.execute({
+      name: 'any name',
+      brand: 'any brand',
+      category_id: 'any category id',
+      daily_rate: 100,
+      description: 'any description',
+      fine_amount: 100,
+      license_plate: 'any license_plate',
+    });
+
+    expect(car.available).toBe(true);
   });
 });

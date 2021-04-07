@@ -1,4 +1,5 @@
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
+import { Car } from '@modules/cars/infra/typeorm/entities/Car';
 import { ICarsRespository } from '@modules/cars/repositories/ICarsRespository';
 import { AppError } from '@shared/errors/AppError';
 
@@ -16,7 +17,7 @@ class CreateCarUseCase {
     description,
     fine_amount,
     license_plate,
-  }: ICreateCarDTO): Promise<void> {
+  }: ICreateCarDTO): Promise<Car> {
     const existentCar = await this.carsRepository.findByLicensePlate(
       license_plate
     );
@@ -25,7 +26,7 @@ class CreateCarUseCase {
       throw new AppError('Car already registered.');
     }
 
-    await this.carsRepository.create({
+    const car = await this.carsRepository.create({
       name,
       brand,
       category_id,
@@ -34,6 +35,8 @@ class CreateCarUseCase {
       fine_amount,
       license_plate,
     });
+
+    return car;
   }
 }
 

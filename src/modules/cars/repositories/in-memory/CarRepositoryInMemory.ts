@@ -4,11 +4,8 @@ import { Car } from '@modules/cars/infra/typeorm/entities/Car';
 import { ICarsRespository } from '../ICarsRespository';
 
 class CarRepositoryInMemory implements ICarsRespository {
-  private cars: Car[] = [];
+  cars: Car[] = [];
 
-  async findByLicensePlate(license_plate: string): Promise<Car> {
-    return this.cars.find((car) => car.license_plate === license_plate);
-  }
   public async create({
     brand,
     category_id,
@@ -17,7 +14,7 @@ class CarRepositoryInMemory implements ICarsRespository {
     fine_amount,
     license_plate,
     name,
-  }: ICreateCarDTO): Promise<void> {
+  }: ICreateCarDTO): Promise<Car> {
     const car = new Car();
 
     Object.assign(car, {
@@ -33,6 +30,12 @@ class CarRepositoryInMemory implements ICarsRespository {
     });
 
     this.cars.push(car);
+
+    return car;
+  }
+
+  async findByLicensePlate(license_plate: string): Promise<Car> {
+    return this.cars.find((car) => car.license_plate === license_plate);
   }
 }
 

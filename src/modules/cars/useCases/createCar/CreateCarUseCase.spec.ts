@@ -12,7 +12,7 @@ describe('Create Car', () => {
     createCarUseCase = new CreateCarUseCase(carsRepository);
   });
   it('should be able to create a new car', async () => {
-    await createCarUseCase.execute({
+    const car = await createCarUseCase.execute({
       name: 'any name',
       brand: 'any brand',
       category_id: 'any category id',
@@ -21,6 +21,8 @@ describe('Create Car', () => {
       fine_amount: 100,
       license_plate: 'any license plate',
     });
+
+    expect(car).toHaveProperty('id');
   });
 
   it('should not be able to create a new car with existent license plate', async () => {

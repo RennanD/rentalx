@@ -39,7 +39,7 @@ export async function ensureAuthenticated(
       id: user_id,
     };
 
-    next();
+    return next();
   } catch (error) {
     if (error instanceof TokenExpiredError) {
       throw new AppError('Your token has expired', 401, 'expired_token');

@@ -1,13 +1,13 @@
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
 import { Car } from '@modules/cars/infra/typeorm/entities/Car';
-import { ICarsRespository } from '@modules/cars/repositories/ICarsRespository';
+import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 import { AppError } from '@shared/errors/AppError';
 
 // @injectable()
 class CreateCarUseCase {
   constructor(
     // @inject('CarsRespository')
-    private carsRepository: ICarsRespository
+    private carsRepository: ICarsRepository
   ) {}
   public async execute({
     name,

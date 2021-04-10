@@ -1,6 +1,7 @@
 import { getRepository, Repository } from 'typeorm';
 
 import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
+import { IFindAllAvailableFilters } from '@modules/cars/dtos/IFilterCarsDTO';
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 
 import { Car } from '../entities/Car';
@@ -10,6 +11,32 @@ class CarsRepository implements ICarsRepository {
 
   constructor() {
     this.repository = getRepository(Car);
+  }
+
+  public async findAllAvailable({
+    name,
+    brand,
+    category_id,
+  }: IFindAllAvailableFilters): Promise<Car[]> {
+    const carsQuery = this.repository
+      .createQueryBuilder('car')
+      .where('available = :available', { available: true });
+
+    if (name) {
+      carsQuery.andWhere("car.name ILIKE '%' || :name || '%'", { name });
+    }
+
+    if (brand) {
+      carsQuery.andWhere("car.brand ILIKE '%' || :brand || '%'", { brand });
+    }
+
+    if (category_id) {
+      carsQuery.andWhere('car.category_id = :category_id ', { category_id });
+    }
+
+    const cars = await carsQuery.getMany();
+
+    return cars;
   }
 
   public async findByLicensePlate(license_plate: string): Promise<Car> {

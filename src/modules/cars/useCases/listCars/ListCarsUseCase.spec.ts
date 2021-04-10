@@ -25,7 +25,7 @@ describe('List cars', () => {
 
     await carsRepository.create(car);
 
-    const cars = await listCarsUseCase.execute();
+    const cars = await listCarsUseCase.execute({});
 
     expect(cars[0]).toHaveProperty('id');
     expect(cars[0].license_plate).toEqual('NIU-3920');
@@ -44,7 +44,7 @@ describe('List cars', () => {
 
     await carsRepository.create(car);
 
-    const cars = await listCarsUseCase.execute('any_name');
+    const cars = await listCarsUseCase.execute({ name: 'any_name' });
 
     expect(cars[0]).toHaveProperty('name');
     expect(cars[0].name).toEqual('any_name');

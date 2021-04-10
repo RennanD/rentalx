@@ -27,7 +27,8 @@ describe('List cars', () => {
 
     const cars = await listCarsUseCase.execute();
 
-    expect(cars).toEqual([car]);
+    expect(cars[0]).toHaveProperty('id');
+    expect(cars[0].license_plate).toEqual('NIU-3920');
   });
 
   it('should able to filter all avalilable cars by name', async () => {

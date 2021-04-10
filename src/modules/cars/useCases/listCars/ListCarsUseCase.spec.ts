@@ -62,7 +62,7 @@ describe('List cars', () => {
 
     await carsRepository.create(car);
 
-    const cars = await listCarsUseCase.execute({ brand: 'any' });
+    const cars = await listCarsUseCase.execute({ brand: 'any brand' });
 
     expect(cars[0]).toHaveProperty('brand');
     expect(cars[0].brand).toEqual('any brand');

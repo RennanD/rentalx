@@ -3,8 +3,8 @@ import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 
 class ListCarsUseCase {
   constructor(private carsRepository: ICarsRepository) {}
-  public async execute(): Promise<Car[]> {
-    const cars = await this.carsRepository.findAllAvailable();
+  public async execute(name?: string): Promise<Car[]> {
+    const cars = await this.carsRepository.findAllAvailable({ name });
 
     return cars;
   }

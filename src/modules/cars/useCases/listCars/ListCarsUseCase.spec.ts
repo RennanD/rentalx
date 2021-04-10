@@ -67,4 +67,25 @@ describe('List cars', () => {
     expect(cars[0]).toHaveProperty('brand');
     expect(cars[0].brand).toEqual('any brand');
   });
+
+  it('should able to filter all avalilable cars by category', async () => {
+    const car = {
+      name: 'any_name',
+      brand: 'any brand',
+      category_id: 'any category id',
+      daily_rate: 200,
+      description: 'any descript',
+      fine_amount: 150,
+      license_plate: 'NIU-3920',
+    };
+
+    await carsRepository.create(car);
+
+    const cars = await listCarsUseCase.execute({
+      category_id: 'any category id',
+    });
+
+    expect(cars[0]).toHaveProperty('category_id');
+    expect(cars[0].category_id).toEqual('any category id');
+  });
 });

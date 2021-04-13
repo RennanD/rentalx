@@ -1,6 +1,7 @@
 import { ICreateUserDTO } from '@modules/accounts/dtos/ICreateUserDTO';
 import { UsersRepositoryInMemory } from '@modules/accounts/repositories/in-memory/UsersRepositoryInMemory';
 import { AppError } from '@shared/errors/AppError';
+import { UnauthorizedError } from '@shared/errors/UnauthorizedError';
 
 import { CreateUserUseCase } from '../createUser/CreateUserUseCase';
 import { AuthenticateUserUseCase } from './AuthenticateUserUseCase';
@@ -42,7 +43,7 @@ describe('Authenticate user', () => {
         email: 'any_email@email.com',
         password: 'any user',
       });
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(UnauthorizedError);
   });
 
   it('show not be able to authenticate a user with invalid password', async () => {
@@ -60,6 +61,6 @@ describe('Authenticate user', () => {
         email: 'any_email@email.com',
         password: 'incorrect password',
       });
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(UnauthorizedError);
   });
 });

@@ -1,6 +1,6 @@
 import { CarRepositoryInMemory } from '@modules/cars/repositories/in-memory/CarRepositoryInMemory';
 import { SpecificationsRepositoryInMemori } from '@modules/cars/repositories/in-memory/SpecificationsRepositoryInMemori';
-import { AppError } from '@shared/errors/AppError';
+import { BadRequestError } from '@shared/errors/BadRequestError';
 
 import { CreateCarSpecificationUseCase } from './CreateCarSpecificationUseCase';
 
@@ -24,7 +24,7 @@ describe('Create Car Specification', () => {
         car_id: 'any_id',
         specifications_id: ['any_id_specification'],
       });
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(BadRequestError);
   });
 
   it('should be possible to add a specification for a car', async () => {

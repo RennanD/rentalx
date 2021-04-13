@@ -1,5 +1,5 @@
 import { CategoriesRepositoryInMemory } from '@modules/cars/repositories/in-memory/CategoriesRepositoryInMemory';
-import { AppError } from '@shared/errors/AppError';
+import { BadRequestError } from '@shared/errors/BadRequestError';
 
 import { CreateCategoryUseCase } from './CreateCategoryUseCase';
 
@@ -36,6 +36,6 @@ describe('Create Category', () => {
         name: 'any category',
         description: 'any description',
       });
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(BadRequestError);
   });
 });

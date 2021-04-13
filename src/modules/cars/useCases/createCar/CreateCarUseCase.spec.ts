@@ -1,5 +1,5 @@
 import { CarRepositoryInMemory } from '@modules/cars/repositories/in-memory/CarRepositoryInMemory';
-import { AppError } from '@shared/errors/AppError';
+import { BadRequestError } from '@shared/errors/BadRequestError';
 
 import { CreateCarUseCase } from './CreateCarUseCase';
 
@@ -40,7 +40,7 @@ describe('Create Car', () => {
 
     expect(async () => {
       await createCarUseCase.execute(carData);
-    }).rejects.toBeInstanceOf(AppError);
+    }).rejects.toBeInstanceOf(BadRequestError);
   });
 
   it('the car should be created as available', async () => {

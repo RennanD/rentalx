@@ -13,6 +13,10 @@ class CarsRepository implements ICarsRepository {
     this.repository = getRepository(Car);
   }
 
+  public async findById(id: string): Promise<Car> {
+    return this.repository.findOne(id);
+  }
+
   public async findAllAvailable({
     name,
     brand,

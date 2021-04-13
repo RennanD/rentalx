@@ -25,7 +25,7 @@ class CreateCarSpecificationUseCase {
 
     car.specifications = specifications;
 
-    await this.carsRespository.create(car);
+    await this.carsRespository.save(car);
   }
 }
 

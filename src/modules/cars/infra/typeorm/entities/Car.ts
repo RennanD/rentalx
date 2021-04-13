@@ -4,6 +4,8 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
@@ -11,6 +13,7 @@ import {
 import { v4 as uuidV4 } from 'uuid';
 
 import { Category } from './Category';
+import { Specification } from './Specification';
 
 @Entity('cars')
 class Car {
@@ -44,6 +47,14 @@ class Car {
   @JoinColumn({ name: 'category_id' })
   @ManyToOne(() => Category)
   category: Category;
+
+  @ManyToMany(() => Specification)
+  @JoinTable({
+    name: 'specifications_cars',
+    joinColumns: [{ name: 'car_id' }], // Self entity reference
+    inverseJoinColumns: [{ name: 'specification_id' }], // Relationship entity reference
+  })
+  specifications: Specification[];
 
   @CreateDateColumn()
   created_at: Date;

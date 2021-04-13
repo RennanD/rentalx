@@ -7,4 +7,5 @@ export interface ICarsRepository {
   create(carData: ICreateCarDTO): Promise<Car>;
   findAllAvailable(filters?: IFindAllAvailableFilters): Promise<Car[]>;
   findById(id: string): Promise<Car>;
+  save(car: Car): Promise<Car>;
 }

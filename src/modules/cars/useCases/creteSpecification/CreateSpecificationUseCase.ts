@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import { ISpecificationsRepository } from '@modules/cars/repositories/ISpecificationsRepository';
-import { AppError } from '@shared/errors/AppError';
+import { BadRequestError } from '@shared/errors/BadRequestError';
 
 interface IRequest {
   name: string;
@@ -20,7 +20,7 @@ class CreateSpecificationUseCase {
     );
 
     if (existentSpecification) {
-      throw new AppError('Specification already exists');
+      throw new BadRequestError('Specification already exists');
     }
 
     await this.specificationsRepository.create({ name, description });

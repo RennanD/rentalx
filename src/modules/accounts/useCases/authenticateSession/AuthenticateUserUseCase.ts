@@ -3,7 +3,7 @@ import { sign } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
 
 import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepository';
-import { AppError } from '@shared/errors/AppError';
+import { UnauthorizedError } from '@shared/errors/UnauthorizedError';
 
 interface IRequest {
   email: string;
@@ -30,21 +30,13 @@ class AuthenticateUserUseCase {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError(
-        'Email/Password invalid combination',
-        401,
-        'auth_error'
-      );
+      throw new UnauthorizedError('Email/Password invalid combination');
     }
 
     const passwordHasMatch = await compare(password, user.password);
 
     if (!passwordHasMatch) {
-      throw new AppError(
-        'Email/Password invalid combination',
-        401,
-        'auth_error'
-      );
+      throw new UnauthorizedError('Email/Password invalid combination');
     }
 
     const token = sign({}, 'e66d837d13a097577d969b59917bfa84', {

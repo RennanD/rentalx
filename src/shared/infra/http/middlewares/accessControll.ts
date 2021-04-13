@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { UsersRepository } from '@modules/accounts/infra/typeorm/repositories/UsersRepository';
-import { AppError } from '@shared/errors/AppError';
+import { UnauthorizedError } from '@shared/errors/UnauthorizedError';
 
 export async function accessControll(
   request: Request,
@@ -15,11 +15,7 @@ export async function accessControll(
   const user = await usersRepository.findById(id);
 
   if (!user.isAdmin) {
-    throw new AppError(
-      'You did not have the required permissions',
-      401,
-      'auth_error'
-    );
+    throw new UnauthorizedError('You did not have the required permissions');
   }
 
   return next();

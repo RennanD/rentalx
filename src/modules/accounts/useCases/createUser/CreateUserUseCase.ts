@@ -3,7 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import { ICreateUserDTO } from '@modules/accounts/dtos/ICreateUserDTO';
 import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepository';
-import { AppError } from '@shared/errors/AppError';
+import { BadRequestError } from '@shared/errors/BadRequestError';
 
 @injectable()
 class CreateUserUseCase {
@@ -23,7 +23,7 @@ class CreateUserUseCase {
     const existentUser = await this.usersRepository.findByEmail(email);
 
     if (existentUser) {
-      throw new AppError('User aleready exists');
+      throw new BadRequestError('User aleready exists');
     }
 
     await this.usersRepository.create({

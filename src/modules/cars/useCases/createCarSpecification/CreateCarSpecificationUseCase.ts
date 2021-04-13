@@ -1,6 +1,6 @@
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 import { ISpecificationsRepository } from '@modules/cars/repositories/ISpecificationsRepository';
-import { AppError } from '@shared/errors/AppError';
+import { BadRequestError } from '@shared/errors/BadRequestError';
 
 interface IRequest {
   car_id: string;
@@ -16,7 +16,7 @@ class CreateCarSpecificationUseCase {
     const car = await this.carsRespository.findById(car_id);
 
     if (!car) {
-      throw new AppError("This does'nt exists.");
+      throw new BadRequestError("This does'nt exists.");
     }
 
     const specifications = await this.specificationsRepository.findByIds(

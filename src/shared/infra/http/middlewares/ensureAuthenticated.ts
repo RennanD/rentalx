@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { verify, TokenExpiredError } from 'jsonwebtoken';
 
 import { UsersRepository } from '@modules/accounts/infra/typeorm/repositories/UsersRepository';
-import { AppError } from '@shared/errors/AppError';
+import { UnauthorizedError } from '@shared/errors/UnauthorizedError';
 
 interface IPayload {
   sub: string;
@@ -16,7 +16,7 @@ export async function ensureAuthenticated(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new AppError('Token missing', 401, 'auth_error');
+    throw new UnauthorizedError('Token missing');
   }
 
   const [, token] = authHeader.split(' ');
@@ -32,7 +32,7 @@ export async function ensureAuthenticated(
     const user = usersRepository.findById(user_id);
 
     if (!user) {
-      throw new AppError("User does'nt exists!", 401, 'auth_error');
+      throw new UnauthorizedError("User does'nt exists!");
     }
 
     request.user = {
@@ -42,8 +42,8 @@ export async function ensureAuthenticated(
     return next();
   } catch (error) {
     if (error instanceof TokenExpiredError) {
-      throw new AppError('Your token has expired', 401, 'expired_token');
+      throw new UnauthorizedError('Your token has expired', 'expired_token');
     }
-    throw new AppError('Invalid token', 401, 'auth_error');
+    throw new UnauthorizedError('Invalid token', 401, 'auth_error');
   }
 }

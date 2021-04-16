@@ -43,9 +43,12 @@ describe('Create Car Specification', () => {
       license_plate: 'any license plate',
     });
 
-    await createCarSpecificationUseCase.execute({
+    const carWithSpecifications = await createCarSpecificationUseCase.execute({
       car_id: car.id,
       specifications_id: [specification.id],
     });
+
+    expect(carWithSpecifications).toHaveProperty('specifications');
+    expect(carWithSpecifications.specifications.length).toBeTruthy();
   });
 });

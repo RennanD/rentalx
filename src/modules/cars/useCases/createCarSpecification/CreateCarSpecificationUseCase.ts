@@ -1,3 +1,4 @@
+import { Car } from '@modules/cars/infra/typeorm/entities/Car';
 import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 import { ISpecificationsRepository } from '@modules/cars/repositories/ISpecificationsRepository';
 import { BadRequestError } from '@shared/errors/BadRequestError';
@@ -12,7 +13,7 @@ class CreateCarSpecificationUseCase {
     private carsRespository: ICarsRepository,
     private specificationsRepository: ISpecificationsRepository
   ) {}
-  public async execute({ car_id, specifications_id }: IRequest): Promise<void> {
+  public async execute({ car_id, specifications_id }: IRequest): Promise<Car> {
     const car = await this.carsRespository.findById(car_id);
 
     if (!car) {
@@ -26,6 +27,8 @@ class CreateCarSpecificationUseCase {
     car.specifications = specifications;
 
     await this.carsRespository.save(car);
+
+    return car;
   }
 }
 

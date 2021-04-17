@@ -2,9 +2,13 @@ node_modules
 
 tmp/*
 !tmp/avatar/
+!tmp/cars/
 !tmp/.gitkeep
 
 tmp/avatar/*
 !tmp/avatar/.gitkeep
+
+tmp/cars/*
+!tmp/cars/.gitkeep
 
 

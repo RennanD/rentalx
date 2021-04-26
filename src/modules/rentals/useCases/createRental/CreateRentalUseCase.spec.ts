@@ -41,4 +41,17 @@ describe('Creat Rental', () => {
       });
     }).rejects.toBeInstanceOf(BadRequestError);
   });
+
+  it('should be able to create a new rental', async () => {
+    const rentalData = {
+      car_id: 'any_id',
+      user_id: 'any_user',
+      expected_return_date: new Date(2021, 5, 27),
+    };
+
+    const rental = await createRentalUseCase.execute(rentalData);
+
+    expect(rental).toHaveProperty('id');
+    expect(rental).toHaveProperty('start_date');
+  });
 });

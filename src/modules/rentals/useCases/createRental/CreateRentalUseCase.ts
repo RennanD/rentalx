@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 import { Rental } from '@modules/rentals/infra/typeorm/entities/Rental';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 import { BadRequestError } from '@shared/errors/BadRequestError';
@@ -30,6 +32,17 @@ class CreateRentalUseCase {
 
     if (openRentalForUser) {
       throw new BadRequestError('Have a another rental open for this user');
+    }
+
+    const compareRentalDate = dayjs(expected_return_date).diff(
+      new Date(2021, 3, 26),
+      'hours'
+    );
+
+    if (compareRentalDate < 24) {
+      throw new BadRequestError(
+        'The rental must have a minimum duration of 24 hours'
+      );
     }
 
     const rental = await this.rentalsRepository.create({

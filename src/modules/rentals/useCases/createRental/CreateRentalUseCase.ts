@@ -1,3 +1,4 @@
+import { Rental } from '@modules/rentals/infra/typeorm/entities/Rental';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 import { BadRequestError } from '@shared/errors/BadRequestError';
 
@@ -14,7 +15,7 @@ class CreateRentalUseCase {
     user_id,
     car_id,
     expected_return_date,
-  }: IRequest): Promise<void> {
+  }: IRequest): Promise<Rental> {
     const carUnavailable = await this.rentalsRepository.findOpenRentalByCar(
       car_id
     );
@@ -30,6 +31,14 @@ class CreateRentalUseCase {
     if (openRentalForUser) {
       throw new BadRequestError('Have a another rental open for this user');
     }
+
+    const rental = await this.rentalsRepository.create({
+      car_id,
+      expected_return_date,
+      user_id,
+    });
+
+    return rental;
   }
 }
 

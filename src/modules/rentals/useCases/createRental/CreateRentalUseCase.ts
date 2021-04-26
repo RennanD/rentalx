@@ -22,6 +22,14 @@ class CreateRentalUseCase {
     if (carUnavailable) {
       throw new BadRequestError('This car is unavaliable');
     }
+
+    const openRentalForUser = await this.rentalsRepository.findOpenRentalByUser(
+      user_id
+    );
+
+    if (openRentalForUser) {
+      throw new BadRequestError('Have a another rental open for this user');
+    }
   }
 }
 

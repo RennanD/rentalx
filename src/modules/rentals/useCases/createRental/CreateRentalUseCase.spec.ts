@@ -12,21 +12,33 @@ describe('Creat Rental', () => {
     createRentalUseCase = new CreateRentalUseCase(rentalsInMemoryRepository);
   });
 
-  it('should not be able to create a new with unavaliable car', async () => {
+  it('should not be able to create a new rental with unavaliable car', async () => {
+    const rentalData = {
+      car_id: 'any_id',
+      user_id: 'any_user',
+      expected_return_date: new Date(2021, 5, 27),
+    };
+
+    await rentalsInMemoryRepository.create(rentalData);
+
     expect(async () => {
-      const rentalData = {
-        car_id: 'any_id',
-        user_id: 'any_user',
-        expected_return_date: new Date(2021, 5, 27),
-      };
-
-      await rentalsInMemoryRepository.create(rentalData);
-
       await createRentalUseCase.execute(rentalData);
     }).rejects.toBeInstanceOf(BadRequestError);
   });
 
-  // it('should be able to create a new rental', async () => {
-  //   await createRentalUseCase.execute();
-  // });
+  it('shoul not be able to create a new rental if there is another rental open for the same user', async () => {
+    const rentalData = {
+      car_id: 'any_id',
+      user_id: 'any_user',
+      expected_return_date: new Date(2021, 5, 27),
+    };
+
+    await rentalsInMemoryRepository.create(rentalData);
+    expect(async () => {
+      await createRentalUseCase.execute({
+        ...rentalData,
+        car_id: 'other_car_id',
+      });
+    }).rejects.toBeInstanceOf(BadRequestError);
+  });
 });

@@ -14,11 +14,15 @@ describe('Creat Rental', () => {
 
   it('should not be able to create a new with unavaliable car', async () => {
     expect(async () => {
-      await createRentalUseCase.execute({
+      const rentalData = {
         car_id: 'any_id',
         user_id: 'any_user',
         expected_return_date: new Date(2021, 5, 27),
-      });
+      };
+
+      await rentalsInMemoryRepository.create(rentalData);
+
+      await createRentalUseCase.execute(rentalData);
     }).rejects.toBeInstanceOf(BadRequestError);
   });
 

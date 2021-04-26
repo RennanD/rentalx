@@ -1,4 +1,5 @@
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
+import { BadRequestError } from '@shared/errors/BadRequestError';
 
 interface IRequest {
   user_id: string;
@@ -14,7 +15,13 @@ class CreateRentalUseCase {
     car_id,
     expected_return_date,
   }: IRequest): Promise<void> {
-    const carAvailable = this.rentalsRepository.findOpenRentalByCar(car_id);
+    const carUnavailable = await this.rentalsRepository.findOpenRentalByCar(
+      car_id
+    );
+
+    if (carUnavailable) {
+      throw new BadRequestError('This car is unavaliable');
+    }
   }
 }
 

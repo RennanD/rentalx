@@ -16,7 +16,7 @@ describe('Creat Rental', () => {
     const rentalData = {
       car_id: 'any_id',
       user_id: 'any_user',
-      expected_return_date: new Date(2021, 5, 27),
+      expected_return_date: new Date(2021, 5, 28),
     };
 
     await rentalsInMemoryRepository.create(rentalData);
@@ -30,7 +30,7 @@ describe('Creat Rental', () => {
     const rentalData = {
       car_id: 'any_id',
       user_id: 'any_user',
-      expected_return_date: new Date(2021, 5, 27),
+      expected_return_date: new Date(2021, 5, 28),
     };
 
     await rentalsInMemoryRepository.create(rentalData);
@@ -42,11 +42,23 @@ describe('Creat Rental', () => {
     }).rejects.toBeInstanceOf(BadRequestError);
   });
 
+  it('should not be able to create a rental that is less than 24 hours long', async () => {
+    const rentalData = {
+      car_id: 'any_id',
+      user_id: 'any_user',
+      expected_return_date: new Date(2021, 3, 26),
+    };
+
+    expect(async () => {
+      await createRentalUseCase.execute(rentalData);
+    }).rejects.toBeInstanceOf(BadRequestError);
+  });
+
   it('should be able to create a new rental', async () => {
     const rentalData = {
       car_id: 'any_id',
       user_id: 'any_user',
-      expected_return_date: new Date(2021, 5, 27),
+      expected_return_date: new Date(2021, 5, 28),
     };
 
     const rental = await createRentalUseCase.execute(rentalData);

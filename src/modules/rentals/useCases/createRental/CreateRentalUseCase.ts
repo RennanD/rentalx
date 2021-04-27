@@ -1,7 +1,6 @@
-import dayjs from 'dayjs';
-
 import { Rental } from '@modules/rentals/infra/typeorm/entities/Rental';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
+import { IDateProvider } from '@shared/container/providers/DateProvider/IDateProvider';
 import { BadRequestError } from '@shared/errors/BadRequestError';
 
 interface IRequest {
@@ -11,7 +10,10 @@ interface IRequest {
 }
 
 class CreateRentalUseCase {
-  constructor(private rentalsRepository: IRentalsRepository) {}
+  constructor(
+    private dateProvider: IDateProvider,
+    private rentalsRepository: IRentalsRepository
+  ) {}
 
   public async execute({
     user_id,
@@ -34,9 +36,11 @@ class CreateRentalUseCase {
       throw new BadRequestError('Have a another rental open for this user');
     }
 
-    const compareRentalDate = dayjs(expected_return_date).diff(
-      new Date(2021, 3, 26),
-      'hours'
+    const dateNow = this.dateProvider.getDateNow();
+
+    const compareRentalDate = this.dateProvider.compareInHours(
+      dateNow,
+      expected_return_date
     );
 
     if (compareRentalDate < 24) {

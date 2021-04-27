@@ -1,3 +1,4 @@
+import { DayjsDateProvider } from '@shared/container/providers/DateProvider/implementations/DayjsDateProvider';
 import { BadRequestError } from '@shared/errors/BadRequestError';
 
 import { RentalsInMemoryRepository } from '../../repositories/in-memory/RentalsInMemoryRepository';
@@ -5,18 +6,23 @@ import { CreateRentalUseCase } from './CreateRentalUseCase';
 
 let createRentalUseCase: CreateRentalUseCase;
 let rentalsInMemoryRepository: RentalsInMemoryRepository;
+let dateProvider: DayjsDateProvider;
 
 describe('Creat Rental', () => {
   beforeEach(() => {
     rentalsInMemoryRepository = new RentalsInMemoryRepository();
-    createRentalUseCase = new CreateRentalUseCase(rentalsInMemoryRepository);
+    dateProvider = new DayjsDateProvider();
+    createRentalUseCase = new CreateRentalUseCase(
+      dateProvider,
+      rentalsInMemoryRepository
+    );
   });
 
   it('should not be able to create a new rental with unavaliable car', async () => {
     const rentalData = {
       car_id: 'any_id',
       user_id: 'any_user',
-      expected_return_date: new Date(2021, 5, 28),
+      expected_return_date: dateProvider.addDays(1),
     };
 
     await rentalsInMemoryRepository.create(rentalData);
@@ -30,7 +36,7 @@ describe('Creat Rental', () => {
     const rentalData = {
       car_id: 'any_id',
       user_id: 'any_user',
-      expected_return_date: new Date(2021, 5, 28),
+      expected_return_date: dateProvider.addDays(1),
     };
 
     await rentalsInMemoryRepository.create(rentalData);
@@ -46,7 +52,7 @@ describe('Creat Rental', () => {
     const rentalData = {
       car_id: 'any_id',
       user_id: 'any_user',
-      expected_return_date: new Date(2021, 3, 26),
+      expected_return_date: dateProvider.getDateNow(),
     };
 
     expect(async () => {
@@ -58,7 +64,7 @@ describe('Creat Rental', () => {
     const rentalData = {
       car_id: 'any_id',
       user_id: 'any_user',
-      expected_return_date: new Date(2021, 5, 28),
+      expected_return_date: dateProvider.addDays(2),
     };
 
     const rental = await createRentalUseCase.execute(rentalData);
